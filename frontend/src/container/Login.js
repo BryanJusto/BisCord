@@ -3,9 +3,10 @@ import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './login.css';
+import './Login.css';
 
 export default function Login(props){
+  const [isLoading,setIsLoading] = useState(false);
   const[email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,8 +14,16 @@ export default function Login(props){
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event){
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    try {
+      //await Auth.signIn(email, password);
+      props.userHasAuthenticated(true);
+      props.history.push("/");
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   return(

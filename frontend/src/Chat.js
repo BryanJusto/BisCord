@@ -7,7 +7,7 @@ const URL = 'ws://localhost:3030';
 class Chat extends Component{
   state = {
     name: '',
-    messages: [],
+    messages: []
   }
 
   ws = new WebSocket(URL);
