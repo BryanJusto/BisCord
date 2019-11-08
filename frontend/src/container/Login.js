@@ -5,45 +5,70 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
 
-export default function Login(props){
-  const [isLoading,setIsLoading] = useState(false);
-  const[email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  function validateForm(){
-    return email.length > 0 && password.length > 0;
+export default class Login extends React.Component{
+  constructor(){
+    super();
+    this.state = {
+      isLoading: false,
+      email: '',
+      password:''
+    };
   }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    try {
-      //await Auth.signIn(email, password);
-      props.userHasAuthenticated(true);
-      props.history.push("/");
-    } catch (e) {
-      alert(e.message);
+  toggleBoolean(field){
+    return () =>{
+      this.setState({
+        [field]: !this.state[field]
+      })
     }
   }
 
-  return(
-    <div className="Login">
-      <form onSubmit={handleSubmit}>
+  updateField(field){
+    return e => {
+      this.setState({
+        [field]: e.currentTarget.value
+      });
+    }
+  }
 
-        <Form.Group controlId="email" bsSize="large">
-          <Form.Label>Email</Form.Label>
-          <Form.Control autoFocus type="email" value={email} onChange={e=>setEmail(e.target.value)}/>
-        </Form.Group>
+  validateForm(){
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
 
-        <Form.Group controlId="password" bsSize="large">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" value={password} onChange={e=>setPassword(e.target.value)}/>
-        </Form.Group>
+  handleSubmit(e){
+    e.preventDefault();
 
-        <Button block bsSize="large" disabled={!validateForm()} type="submit">
-          Login
-        </Button>
-      </form>
-    </div>
-)
+    const { email, password } = this.state;
+
+      try {
+        this.props.userHasAuthenticated(true);
+        this.props.history.push("/");
+      } catch (e) {
+        alert(e.message);
+      }
+  }
+
+
+
+  render(){
+    return(
+      <div className="Login">
+        <form onSubmit={e => this.handleSubmit(e)}>
+
+          <Form.Group controlId="email" bsSize="large">
+            <Form.Label>Email</Form.Label>
+            <Form.Control autoFocus type="email" value={this.state.email} onChange={this.updateField("email")}/>
+          </Form.Group>
+
+          <Form.Group controlId="password" bsSize="large">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" value={this.state.password} onChange={this.updateField("password")}/>
+          </Form.Group>
+
+          <Button block bsSize="large" disabled={!this.validateForm()} type="submit">
+            Login
+          </Button>
+        </form>
+      </div>
+    )
+  }
 }

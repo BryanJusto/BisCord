@@ -11,7 +11,8 @@ export default function Routes({ appProps }) {
   return (
     <Switch>
       <AppliedRoute path="/" exact component={Home} appProps={appProps} />
-      <AppliedRoute path="/login" exact component={Login} appProps={appProps} />
+      <AppliedRoute path="/login" exact render={() => <Login handleSubmit={login}/>} appProps={appProps} />
+      <AppliedRoute path="/signup" exact render={() => <Login handleSubmit={signup}/>} appProps={appProps} />
 
       <Route component={errorNotFound} />
     </Switch>
